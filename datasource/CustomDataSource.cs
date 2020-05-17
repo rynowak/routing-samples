@@ -27,11 +27,9 @@ namespace Samples
             get
             {
                 var endpoints = new List<Endpoint>();
-                var inert = this.controllers.Endpoints;
-
                 foreach (var mapping in Mappings)
                 {
-                    var match = FindMatchingEndpoint(mapping, inert);
+                    var match = FindMatchingEndpoint(mapping, controllers.Endpoints);
 
                     var builder = new RouteEndpointBuilder(match.RequestDelegate, mapping.Pattern, order: 0);
                     foreach (var metadata in match.Metadata)
@@ -56,9 +54,9 @@ namespace Samples
             return controllers.GetChangeToken(); // Change when controllers change (usually never).
         }
 
-        private static Endpoint FindMatchingEndpoint(Mapping mapping, IReadOnlyList<Endpoint> inert)
+        private static Endpoint FindMatchingEndpoint(Mapping mapping, IReadOnlyList<Endpoint> endpoints)
         {
-            foreach (var endpoint in inert)
+            foreach (var endpoint in endpoints)
             {
                 if (endpoint is RouteEndpoint)
                 {
